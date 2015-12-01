@@ -7,8 +7,8 @@ var appId = process.env.appId
 
 var pubnub = require("pubnub")({
 	ssl: true,
-	publish_key   : 'demo',
-	subscribe_key : 'demo'
+	publish_key   : process.env.publish_key,
+	subscribe_key : process.env.subscribe_key
 });
 
 var message = {

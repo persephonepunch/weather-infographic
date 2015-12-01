@@ -1,7 +1,4 @@
 $(function() {
-  var pubnub = PUBNUB({ publish_key   : 'demo',
-    subscribe_key : 'demo'}); 
-  L.mapbox.accessToken = 'accessToken';
   var uuid = pubnub.uuid();
   var geoCoderControlEvents = ['error', 'select', 'autoselect'];  
   var geocoderControl = L.mapbox.geocoderControl('mapbox.places', { keepOpen: true, autocomplete: true, position: "bottomright", promximity: false });
@@ -9,7 +6,7 @@ $(function() {
   var map = L.map('map').addLayer(mapboxTiles).setView([0, 50], 2).addControl(geocoderControl);
   var icons = {"01": 'clear', "02": 'cloudy', "03": 'cloudy', "04": 'cloudy', "09": 'thunder', "10":'thunder', "11": 'thunder', "13": 'thunder', "50": 'thunder'}
   var places = [];
-  var allMarkers = [];  
+  var allMarkers = [];   
 
   L.Map = L.Map.extend({
     openPopup: function(popup) {        
