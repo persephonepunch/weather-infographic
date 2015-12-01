@@ -1,6 +1,6 @@
 $(function() {
   var uuid = pubnub.uuid();
-  var geoCoderControlEvents = ['error', 'select', 'autoselect'];  
+  var geoCoderControlEvents = ['select', 'autoselect'];  
   var geocoderControl = L.mapbox.geocoderControl('mapbox.places', { keepOpen: true, autocomplete: true, position: "bottomright", promximity: false });
   var mapboxTiles = L.tileLayer('https://api.mapbox.com/v4/mapbox.pirates/{z}/{x}/{y}.png?access_token=' + L.mapbox.accessToken, { attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'});
   var map = L.map('map').addLayer(mapboxTiles).setView([0, 50], 2).addControl(geocoderControl);
@@ -47,7 +47,7 @@ $(function() {
     // specify popup options 
     var popupOptions =  {'maxWidth': '300', 'className' : 'custom'};
 
-    function callback(e) {
+    function selectPlace(e) {
     	map.setView([0, 50], 2);			
     	if(e.feature.id.indexOf('place') == -1) {
     		alert('Please select a smaller region');
@@ -57,7 +57,7 @@ $(function() {
     }
 
     geoCoderControlEvents.forEach(function(event) {
-    	geocoderControl.on(event, callback)
+    	geocoderControl.on(event, selectPlace)
     })    
 
     pubnub.subscribe({
