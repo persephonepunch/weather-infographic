@@ -17,20 +17,17 @@ $(function() {
    }
  });
 
-  function getPopupTemplate(message) {
-    var coord = message.coordinates;
+  function getPopup(message) {
+    var template = $('#popup').html();    
     var timeZoneId = message.timeZoneId;
-    var sunrise = message.sunrise;
-    var sunset = message.sunset;
-    var temperature = message.temperature;
-    var summary = message.description;    
-    var sunriseTemplate = '<li><img width="20px" src="assets/sunrise.png"/>'+' '+moment(sunrise).tz(timeZoneId).format('hh:mm:ss A')+'</li>';
-    var sunsetTemplate = '<li><img width="20px" src="assets/sunset.png"/>'+moment(sunset).tz(timeZoneId).format('hh:mm:ss A')+'</li>';
-    var timeTemplate = '<li><img width="15px" src="assets/time.png"/>'+moment().tz(timeZoneId).format('HH:mm:ss')+'</li>';
-    var tempTemplate = '<li><img width="20px" src="assets/temperature.png"/>'+(Math.floor(temperature - 273.15)).toString()+' \xB0 C'+'</li>';
-    var descriptionTemplate = '<li><img width="20px" src="assets/drizzle.png"/>'+summary+'</li>';
-    var html = '<ul>'+ timeTemplate + sunriseTemplate + sunsetTemplate + tempTemplate+ descriptionTemplate +'</ul>'
-    return html;
+    var info = {
+      sunrise: moment(message.sunrise).tz(timeZoneId).format('hh:mm:ss A'),
+      sunset:  moment(message.sunrise).tz(timeZoneId).format('hh:mm:ss A'),
+      time: moment().tz(timeZoneId).format('HH:mm:ss'),
+      temperature: Math.floor(message.temperature - 273.15).toString()+' \xB0 C',
+      summary: message.description
+    }    
+    return Mustache.render(template, info);    
   }
 
   function getMarker(place) {
@@ -77,7 +74,7 @@ $(function() {
       })
       allMarkers = [];
       places.forEach(function(place) {
-       var infoLayer = L.marker(place.coordinates, {icon: getIcon(place)}).bindPopup(getPopupTemplate(place),popupOptions).addTo(map);
+       var infoLayer = L.marker(place.coordinates, {icon: getIcon(place)}).bindPopup(getPopup(place),popupOptions).addTo(map);
        allMarkers.push(infoLayer)		
      });		
     }
