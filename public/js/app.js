@@ -2,11 +2,13 @@ $(function() {
   var uuid = pubnub.uuid();
   var geoCoderControlEvents = ['select', 'autoselect'];  
   var geocoderControl = L.mapbox.geocoderControl('mapbox.places', { keepOpen: true, autocomplete: true, position: "bottomright", promximity: false });
-  var mapboxTiles = L.tileLayer('https://api.mapbox.com/v4/mapbox.pirates/{z}/{x}/{y}.png?access_token=' + L.mapbox.accessToken, { attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'});
+  var mapboxTiles = L.tileLayer('https://api.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=' + L.mapbox.accessToken, { attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'});
   var map = L.map('map').addLayer(mapboxTiles).setView([0, 50], 2).addControl(geocoderControl);
   var icons = {"01": 'clear', "02": 'cloudy', "03": 'cloudy', "04": 'cloudy', "09": 'thunder', "10":'thunder', "11": 'thunder', "13": 'thunder', "50": 'thunder'}
   var places = [];
   var allMarkers = [];   
+  var colorCold = '004BA8';
+  var colorHot = 'D7263D';
 
   L.Map = L.Map.extend({
     openPopup: function(popup) {        
@@ -16,6 +18,18 @@ $(function() {
     });
    }
  });
+
+  function colorLuminance(hex, lum) {
+    lum = lum || 0;  
+    var rgb = "#", c, i;
+    for (i = 0; i < 3; i++) {
+      c = parseInt(hex.substr(i*2,2), 16);
+      c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+      rgb += ("00"+c).substr(c.length);
+    }
+    return rgb;
+  }
+
 
   function getPopup(message) {
     var template = $('#popup').html();    
@@ -34,11 +48,12 @@ $(function() {
     var template = $('#map-marker').html();
     var weather = {
       cloud: icons[place.icon.match(/\d+/)[0]],
-      place: place.place,
-      temp: getTemp(place.temperature),
+      place: place.place,     
       humidity: place.humidity,
-      weather: place.icon
+      weather: place.icon, 
+      tempColor: getTempColor(place.temperature)
     };    
+
     place.wind >= 11 ? weather.wind = 'windHigh' : weather.wind = 'wind';    
     place.icon.indexOf('n') > -1 ? weather.time = 'moon' : weather.time = 'sun';    
     return Mustache.render(template, weather);    
@@ -79,7 +94,7 @@ $(function() {
      });		
     }
 
-    var pla = {
+    var sampleMarker = {
       place: "San Francisco",
       sunrise: "2015-11-11T00:46:56+00:00",
       sunset: "2015-11-11T12:21:07+00:00",
@@ -90,14 +105,13 @@ $(function() {
       humidity: 50 
     }
 
-    function getTemp(temperature) {      
+    function getTempColor(temperature) {      
       tempCelsius = temperature - 273.15
       if (tempCelsius < 0) {
         return 0; 
       }
-      // On a scale of 0-40
-      tempNormalized = Math.floor(tempCelsius*2.5);      
-      return tempNormalized > 100 ? 100 : tempNormalized
+       
+      return tempCelsius > 25 ? colorLuminance(colorHot, (tempCelsius - 25)/25) : colorLuminance(colorCold, tempCelsius / 25)
     }
 
     function getIcon(place) {
@@ -107,7 +121,7 @@ $(function() {
       html: getMarker(place)
     });   
    }
-   L.marker([45, 45], {icon: getIcon(pla)}).addTo(map);
+   //L.marker([45, 45], {icon: getIcon(sampleMarker)}).addTo(map);
 
    window.setInterval(refreshView, 5000)
 

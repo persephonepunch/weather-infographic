@@ -21,7 +21,7 @@
     <div id='map'></div>
     <template id="map-marker">        
         <div class="col-md-1 indicator-container">
-            <div class='row indicator' style="background-image:linear-gradient(to top,#FE654F,#FE654F {{temp}}%,#4D9DE0 {{temp}}%);"></div>
+            <div class='row indicator' style="background-image:linear-gradient(to top,{{tempColor}},white);"></div>
         </div>
         <div class="col-md-4 icon-container" style="margin-left: -26px">
             <div class="row time"><img src="assets/{{time}}.svg" id="sun" /></div>
