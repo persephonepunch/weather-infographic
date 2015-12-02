@@ -8,6 +8,7 @@
 
 .div-icon{
 	border: solid 1px yellow;
+	background-color:rgba(0, 0, 0, 0.2)
 }
 
 .div-icon .indicator{
