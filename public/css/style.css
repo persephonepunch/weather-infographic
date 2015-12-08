@@ -7,23 +7,23 @@
 }
 
 .div-icon{
-	border: solid 1px yellow;
-	background-color:rgba(0, 0, 0, 0.2)
+	border: solid 1px yellow;	
 }
+
+/*rgba(252, 246, 177, 0.2)*/
 
 .div-icon .indicator{
 	width: 5px;
-	height: 50px;
+	height: 35px;
 }
 
 .weather-icon {
-	position: relative;
-	left:-3px;
-	top: -4px;
+	position: relative;	
+	top: -33px;
 }
 
 .weather-icon img {
-	height: 38px;
+	height: 30px;
 }
 .time {
 	position: relative;

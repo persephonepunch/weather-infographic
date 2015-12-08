@@ -8,6 +8,12 @@ var appId = process.env.appId
 var cityCoordinates = require('./cities')
 var cities = Object.keys(cityCoordinates)
 var data
+var currentConditions = []
+var pubnub = require("pubnub")({
+	ssl: true,
+	publish_key   : process.env.publish_key,
+	subscribe_key : process.env.subscribe_key
+});
 
 function refreshData () {
 	data = []
@@ -15,22 +21,8 @@ function refreshData () {
 	fetch(cities[i], cityCoordinates[cities[i]], i, data)	
 }
 
-refreshData()
-
-var pubnub = require("pubnub")({
-	ssl: true,
-	publish_key   : process.env.publish_key,
-	subscribe_key : process.env.subscribe_key
-});
-
-var message = {
-	"server": "received on the server"
-};
-
 function fetch (place, coordinates, i, aggregate) {
-	// var uuid = message.uuid;
-	// var place = message.place;	
-	// var coordinates = message.coordinates;
+	// var uuid = message.uuid;	
 	async.parallel([
 		function(callback) {
 			request
@@ -87,15 +79,15 @@ function fetch (place, coordinates, i, aggregate) {
    		'icon': results[2].weather[0].icon,
    		'description': results[2].weather[0].description
    	};
-   	//pub(err, data);
+   	
    	if (i == cities.length -1) {
-   		aggregate.push(data);
-   		fs.writeFileSync('./data.js', JSON.stringify(aggregate), 'utf8')
-   		pub(aggregate)
+   		aggregate.push(data);   		
+   		currentConditions = aggregate
+   		pub(currentConditions)
    	}
    	else {
    		++i
-   		console.log('fetching !!!!!!!!!!!!!!!', i)
+   		console.log('fetching city...', i)
    		aggregate.push(data);
    		fetch(cities[i], cityCoordinates[cities[i]], i, aggregate)
    	}
@@ -103,22 +95,13 @@ function fetch (place, coordinates, i, aggregate) {
    );
 }
 
-var pubnubOptions = {
-	channel: 'wnGetTime',
-	message: message,
-	callback: function(e) {
-		console.log("SUCCESS!", e);
-	},
-	error: function(e) {
-		console.log("FAILED! RETRY PUBLISH!", e);
-	}
-};
+refreshData()
+setInterval(refreshData, 900000)
 
 pubnub.subscribe({
 	channel: "wnPutTime",
-	callback: function(message) {
-		console.log("lat", message.coordinates[0], "long", message.coordinates[1]);		
-		fetch(message);
+	callback: function(message) {		
+		pub(currentConditions)
 	}
 });
 

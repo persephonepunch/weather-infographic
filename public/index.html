@@ -19,18 +19,19 @@
 
 <body>
     <div id='map'></div>
-    <template id="map-marker">        
-        <div class="col-md-1 indicator-container">
-            <div class='row indicator' style="background-image:linear-gradient(to bottom,{{tempColor}},white);"></div>
+    <template id="map-marker">
+    <div  style="background-color: {{backgroundColor}}; height: 35px">      
+            <div class="col-md-1 indicator-container">
+                <div class='row indicator' style="background-image:linear-gradient(to bottom,{{tempColor}},white);"></div>
+            </div>
+            <div class="col-md-4 icon-container" style="">            
+                <div class="row weather-icon"><img src="http://openweathermap.org/img/w/{{weather}}.png" id="cloud" /></div>                
+            </div>
+            <div class="col-md-1 humidity-indicator" style="margin-left: -6px; position: relative; bottom: 66px;left: 34px;">
+                <div class='row indicator' style="background-image:linear-gradient(to bottom, white, #D6EEFF {{humidity}}%);"></div>
+            </div>
+            <div style="position: relative; bottom: 69px; left: -1px;"><strong>{{place}}</strong></div>
         </div>
-        <div class="col-md-4 icon-container" style="margin-left: -26px">
-            <div class="row time"><img src="assets/{{time}}.svg" id="sun" /></div>
-            <div class="row weather-icon"><img src="http://openweathermap.org/img/w/{{weather}}.png" id="cloud" /></div>                
-        </div>
-        <div class="col-md-1 humidity-indicator" style="margin-left: -6px; position: relative; bottom: 60px;left: 39px;">
-            <div class='row indicator' style="background-image:linear-gradient(to bottom, white, #686963 {{humidity}}%);"></div>
-        </div>
-        <div style="position: relative; bottom: 56px; left: -1px;"><strong>{{place}}</strong></div>
     </template>
     <template id='popup'>
         <ul>
