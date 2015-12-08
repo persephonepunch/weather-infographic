@@ -1,9 +1,21 @@
 var express = require('express')
 var app = express()
+var fs = require('fs')
 var request = require('superagent')
 var gApiToken = process.env.gApiToken
 var async = require('async')
 var appId = process.env.appId
+var cityCoordinates = require('./cities')
+var cities = Object.keys(cityCoordinates)
+var data
+
+function refreshData () {
+	data = []
+	var i=0
+	fetch(cities[i], cityCoordinates[cities[i]], i, data)	
+}
+
+refreshData()
 
 var pubnub = require("pubnub")({
 	ssl: true,
@@ -15,10 +27,10 @@ var message = {
 	"server": "received on the server"
 };
 
-function fetch (message) {
-	var uuid = message.uuid;
-	var place = message.place;	
-	var coordinates = message.coordinates;
+function fetch (place, coordinates, i, aggregate) {
+	// var uuid = message.uuid;
+	// var place = message.place;	
+	// var coordinates = message.coordinates;
 	async.parallel([
 		function(callback) {
 			request
@@ -63,7 +75,7 @@ function fetch (message) {
    function(err, results) {
    	console.log("Error OR Results", JSON.stringify(err || results));
    	var data = {
-   		'uuid': uuid,
+   		//'uuid': uuid,
    		'place': place,
    		'coordinates': coordinates.reverse(),
    		'timeZoneId': results[0].timeZoneId,
@@ -75,7 +87,18 @@ function fetch (message) {
    		'icon': results[2].weather[0].icon,
    		'description': results[2].weather[0].description
    	};
-   	pub(err, data);
+   	//pub(err, data);
+   	if (i == cities.length -1) {
+   		aggregate.push(data);
+   		fs.writeFileSync('./data.js', JSON.stringify(aggregate), 'utf8')
+   		pub(aggregate)
+   	}
+   	else {
+   		++i
+   		console.log('fetching !!!!!!!!!!!!!!!', i)
+   		aggregate.push(data);
+   		fetch(cities[i], cityCoordinates[cities[i]], i, aggregate)
+   	}
    }
    );
 }
@@ -99,12 +122,15 @@ pubnub.subscribe({
 	}
 });
 
-function pub(err, data) {		
+function pub(data) {		
 	pubnub.publish({
-		channel: data.uuid,
-		message: err || data,
+		channel: 'wnGet',
+		message: data,
 		callback: function(m) {
 			console.log(m)
+		}, 
+		error: function(err) {
+			console.log(err)
 		}
 	})
 };
