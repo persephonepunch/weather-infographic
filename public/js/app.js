@@ -4,17 +4,10 @@ $(function() {
     attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
   });
   var map = L.map('map').addLayer(mapboxTiles).setView([0, 50], 2);
-  var icons = {
-    "01": 'clear',
-    "02": 'cloudy',
-    "03": 'cloudy',
-    "04": 'cloudy',
-    "09": 'thunder',
-    "10": 'thunder',
-    "11": 'thunder',
-    "13": 'thunder',
-    "50": 'thunder'
-  }
+  map.touchZoom.disable();
+  map.doubleClickZoom.disable();
+  map.scrollWheelZoom.disable();
+
   var places = [];
   var allMarkers = [];
   var colorCold = '004BA8';
