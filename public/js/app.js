@@ -3,10 +3,11 @@ $(function() {
   var mapboxTiles = L.tileLayer('https://api.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=' + L.mapbox.accessToken, {
     attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
   });
-  var map = L.map('map').addLayer(mapboxTiles).setView([0, 50], 2);
+  var map = L.map('map', {zoomControl: false}).addLayer(mapboxTiles).setView([0, 50], 2);
   map.touchZoom.disable();
   map.doubleClickZoom.disable();
   map.scrollWheelZoom.disable();
+
 
   var places = [];
   var allMarkers = [];
@@ -51,7 +52,6 @@ $(function() {
   function getMarker(place) {
     var template = $('#map-marker').html();
     var weather = {
-      cloud: icons[place.icon.match(/\d+/)[0]],
       place: place.place,
       humidity: place.humidity,
       weather: place.icon,
