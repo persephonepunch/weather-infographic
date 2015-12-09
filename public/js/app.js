@@ -95,7 +95,7 @@ $(function() {
     sunset: "2015-11-11T12:21:07+00:00",
     temperature: 294.584,
     timeZoneId: "Asia/Calcutta",
-    icon: "01n",
+    icon: "50n",
     wind: 12,
     humidity: 70  
   }
@@ -116,7 +116,7 @@ $(function() {
       html: getMarker(place)
     });
   }
-  //L.marker([45, 45], {icon: getIcon(sampleMarker)}).addTo(map);
+  //L.marker([45, 45], {icon: getIcon(sampleMarker)}).bindPopup(getPopup(sampleMarker), popupOptions).addTo(map);
 
   window.setInterval(refreshView, 5000)
 

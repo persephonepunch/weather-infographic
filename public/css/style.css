@@ -1,3 +1,7 @@
+.div-icon div{
+
+}
+
 .div-icon .icon-indicator{
 	margin-left: -22px;
 }
@@ -23,7 +27,9 @@
 }
 
 .weather-icon img {
-	height: 30px;
+	position: relative;
+	height: 28px;
+	left: 3px;
 }
 .time {
 	position: relative;
