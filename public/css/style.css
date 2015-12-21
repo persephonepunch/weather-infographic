@@ -1,35 +1,24 @@
-.div-icon div{
-
+.marker-container{
+	display: flex !important;
+	flex-direction: column;
+	align-items:center;	
 }
 
-.div-icon .icon-indicator{
-	margin-left: -22px;
+.popup-img {
+	width: 20px;
 }
 
-.humidity-container{
-	margin-left: -6px;
-}
-
-.div-icon{
+.div-icon {
 	border: solid 1px yellow;	
 }
-
-/*rgba(252, 246, 177, 0.2)*/
 
 .div-icon .indicator{
 	width: 5px;
 	height: 35px;
 }
 
-.weather-icon {
-	position: relative;	
-	top: -33px;
-}
-
-.weather-icon img {
-	position: relative;
-	height: 28px;
-	left: 3px;
+.weather-icon img {	
+	height: 28px;	
 }
 .time {
 	position: relative;
@@ -64,6 +53,10 @@
 	bottom: 85px;
 }
 
+.popup-param {
+	display: flex;
+}
+
 
 #map { 
 	position:absolute; 
@@ -72,8 +65,8 @@
 	width:100%; 
 }
 .search-ui {
-  position:absolute;
-  top:10px;
-  right:10px;
-  z-index:1000;
-  }
+	position:absolute;
+	top:10px;
+	right:10px;
+	z-index:1000;
+}

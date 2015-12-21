@@ -20,28 +20,38 @@
 <body>
     <div id='map'></div>
     <template id="map-marker">
-    <div  style="background-color: {{backgroundColor}}; height: 35px">      
-            <div class="col-md-1 indicator-container">
-                <div class='row indicator' style="background-image:linear-gradient(to bottom,{{tempColor}},white);"></div>
+    <div id="{{id}}" class="marker-container">
+            <div style="background-color: {{backgroundColor}}; height: 35px; display: flex; align-items: center; justify-content: center;">      
+                <div class="indicator-container">
+                    <div class='indicator' style="background-image:linear-gradient(to bottom,{{tempColor}},white);background-color: {{tempSolid}}"></div>
+                </div>
+                <div class="icon-container">            
+                    <div class="weather-icon"><img src="http://openweathermap.org/img/w/{{weather}}.png" id="cloud" /></div>                
+                </div>
+                <div class="humidity-indicator">
+                    <div class='indicator' style="background-image:linear-gradient(to bottom, white, #D6EEFF {{humidity}}%);"></div>
+                </div>            
             </div>
-            <div class="col-md-4 icon-container" style="">            
-                <div class="row weather-icon"><img src="http://openweathermap.org/img/w/{{weather}}.png" id="cloud" /></div>                
-            </div>
-            <div class="col-md-1 humidity-indicator" style="margin-left: -6px; position: relative; bottom: 63px;left: 6px;">
-                <div class='row indicator' style="background-image:linear-gradient(to bottom, white, #D6EEFF {{humidity}}%); position:relative; left: 28px; top: -1px"></div>
-            </div>
-            <div style="position: relative; bottom: -12px; left: -1px; height: 90%"><strong style="position: relative; bottom: 81px;">{{place}}</strong></div>
+            <div style="height: 90%"><strong style="color: #2D0BA7">{{place}}</strong></div>
         </div>
     </template>
     <template id='popup'>
-        <ul>
-            <li><img width="20px" src="assets/sunrise.png"/>{{sunrise}}</li>
-            <li><img width="20px" src="assets/sunset.png"/>{{sunset}}</li>
-            <li><img width="15px" src="assets/time.png"/>{{time}}</li>
-            <li><img width="20px" src="assets/temperature.png"/>{{temperature}}</li>
-            <li><img width="20px" src="assets/drizzle.png"/>{{summary}}</li>
-        </ul>   
-    </template>
+        <div class='{{place}}' style="display: flex; flex-direction: column;">
+            <div class='popup-param'><div class='popup-img'><img width="18px" src="assets/time.svg"/></div>
+            <b >{{time}}</b></div>
+            <div class='popup-param'><div class='popup-img'><img width="20px" src="assets/sunrise.png"/></div>
+            <b >{{sunrise}}</b></div>
+            <div class='popup-param'><div class='popup-img'><img width="20px" src="assets/sunset.png"/></div>
+            <b >{{sunset}}</b></div>        
+            <div class='popup-param'><div class='popup-img'><img width="20px" src="assets/temperature.png"/></div>
+            <b >{{temperature}}</b></div>
+            <div class='popup-param'><div class='popup-img'><img width="16px" src="assets/humidity.svg"/></div>
+            <b >{{humidity}}</b></div>
+            <div class='popup-param'><div class='popup-img'><img width="20px" src="assets/drizzle.png"/></div>
+            <b >{{summary}}</b></div>
+
+        </div>       
+    </template>    
     <script src='config.js'></script>
     <script src='js/app.js'></script>
 </body>

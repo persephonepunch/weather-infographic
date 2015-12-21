@@ -8,7 +8,7 @@ var appId = process.env.appId
 var cityCoordinates = require('./cities')
 var cities = Object.keys(cityCoordinates)
 var data
-var currentConditions = []
+var currentConditions = {}
 var pubnub = require("pubnub")({
 	ssl: true,
 	publish_key   : process.env.publish_key,
@@ -16,7 +16,7 @@ var pubnub = require("pubnub")({
 });
 
 function refreshData () {
-	data = []
+	data = {}
 	var i=0
 	fetch(cities[i], cityCoordinates[cities[i]], i, data)	
 }
@@ -66,8 +66,7 @@ function fetch (place, coordinates, i, aggregate) {
    */
    function(err, results) {
    	console.log("Error OR Results", JSON.stringify(err || results));
-   	var data = {
-   		//'uuid': uuid,
+   	var data = {   		
    		'place': place,
    		'coordinates': coordinates.reverse(),
    		'timeZoneId': results[0].timeZoneId,
@@ -81,14 +80,14 @@ function fetch (place, coordinates, i, aggregate) {
    	};
    	
    	if (i == cities.length -1) {
-   		aggregate.push(data);   		
-   		currentConditions = aggregate
+   		aggregate[place] = data;   		
+   		currentConditions = aggregate   		
    		pub(currentConditions)
    	}
    	else {
    		++i
    		console.log('fetching city...', i)
-   		aggregate.push(data);
+   		aggregate[place] = data;	
    		fetch(cities[i], cityCoordinates[cities[i]], i, aggregate)
    	}
    }
@@ -98,14 +97,16 @@ function fetch (place, coordinates, i, aggregate) {
 refreshData()
 setInterval(refreshData, 900000)
 
+
 pubnub.subscribe({
 	channel: "wnPutTime",
-	callback: function(message) {		
+	callback: function(message) {
 		pub(currentConditions)
 	}
 });
 
 function pub(data) {		
+	console.log(Array.isArray(data))
 	pubnub.publish({
 		channel: 'wnGet',
 		message: data,
