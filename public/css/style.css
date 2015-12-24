@@ -1,3 +1,10 @@
+#map { 
+	position:absolute; 
+	top:0; 
+	bottom:0; 
+	width:100%; 
+}
+
 .marker-container{
 	display: flex !important;
 	flex-direction: column;
@@ -20,53 +27,7 @@
 .weather-icon img {	
 	height: 28px;	
 }
-.time {
-	position: relative;
-	left: 5px;
-}
-
-.time img {
-	height: 20px;
-}
-
-.div-icon .day-night {
-	position: relative;
-	bottom: 37px;
-}
-
-.div-icon .weather{
-	position: relative;
-	bottom: 98px;
-	left: 35px;
-}
-
-.div-icon .wind{
-	position: relative;
-	right: 20px;
-	bottom: 81px;	
-}
-
-.div-icon .city{
-	position: relative;
-	color: #160D08;
-	width:30px;
-	bottom: 85px;
-}
 
 .popup-param {
 	display: flex;
-}
-
-
-#map { 
-	position:absolute; 
-	top:0; 
-	bottom:0; 
-	width:100%; 
-}
-.search-ui {
-	position:absolute;
-	top:10px;
-	right:10px;
-	z-index:1000;
 }

@@ -1,6 +1,5 @@
 var express = require('express')
 var app = express()
-var fs = require('fs')
 var request = require('superagent')
 var gApiToken = process.env.gApiToken
 var async = require('async')
@@ -21,8 +20,7 @@ function refreshData () {
 	fetch(cities[i], cityCoordinates[cities[i]], i, data)	
 }
 
-function fetch (place, coordinates, i, aggregate) {
-	// var uuid = message.uuid;	
+function fetch (place, coordinates, i, aggregate) {	
 	async.parallel([
 		function(callback) {
 			request
@@ -105,8 +103,7 @@ pubnub.subscribe({
 	}
 });
 
-function pub(data) {		
-	console.log(Array.isArray(data))
+function pub(data) {	
 	pubnub.publish({
 		channel: 'wnGet',
 		message: data,
