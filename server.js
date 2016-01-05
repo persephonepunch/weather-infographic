@@ -1,3 +1,10 @@
+/*
+ * @file 
+ * Server Code 
+ *
+ * Server code for periodically pulling data from APIs and providing it to infographic layout
+ * 
+*/
 var express = require('express')
 var app = express()
 var request = require('superagent')
@@ -14,12 +21,34 @@ var pubnub = require("pubnub")({
 	subscribe_key : process.env.subscribe_key
 });
 
+/*
+ * refreshData
+ * 
+ * Initiates API calls for all cities one my one
+ */
 function refreshData () {
 	data = {}
 	var i=0
 	fetch(cities[i], cityCoordinates[cities[i]], i, data)	
 }
 
+/*
+ * fetch
+ *
+ * Runs three async REST API calls to get the current data from
+ * - timezone
+ * - Sunrise and sunset time
+ * - weather data
+ *
+ * Collates the data into a JSON object and publishes on channel
+ * Also, calls recursively for all cities.
+ *
+ * @param place - city name
+ * @param coordinates - latitude and longitude coordinates of the city
+ * @param i - city index in the stored city list (cities.js)
+ * @param aggregate - aggregated data array for all cities
+ * 
+ */ 
 function fetch (place, coordinates, i, aggregate) {	
 	async.parallel([
 		function(callback) {
@@ -92,16 +121,29 @@ function fetch (place, coordinates, i, aggregate) {
    );
 }
 
+//This is where periodic update happens, currently set to 15 mins
 refreshData()
 setInterval(refreshData, 900000)
 
-
+/*
+ *
+ * PubNub Subscribe - Listen to requests from client and send them the 
+ * current conditions for all cities, without fetching. 
+ *
+ * Fetch happens only at the predefined regular interval
+ */
 pubnub.subscribe({
 	channel: "wnPutTime",
 	callback: function(message) {
 		pub(currentConditions)
 	}
 });
+
+/*
+ *
+ * PubNub Publish - Publish the updated current conditions for all cities after fetch
+ * @param data - current conditions as collated by the fetch method. 
+ */
 
 function pub(data) {	
 	pubnub.publish({
@@ -116,6 +158,7 @@ function pub(data) {
 	})
 };
 
+//Server begins to execute here
 app.use(express.static('public'))
 app.listen(process.env.PORT || 3000, function() {
 	console.log('Weather Now listening on *:', process.env.PORT || 3000)

@@ -1,3 +1,4 @@
+//List of cities to display
 module.exports = {
 	
 	"San Francisco": [-122.4511, 37.7363], 	

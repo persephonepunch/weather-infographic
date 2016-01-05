@@ -52,7 +52,12 @@ $(function() {
     return rgb
   }
 
-
+  /*
+  * Function to create the popup html content or secondary card info
+  *
+  * Uses mustache template for generating HTML
+  * @param place - city name
+  */
   function getPopup(place) {
     var template = $('#popup').html()
     var timeZoneId = place.timeZoneId
@@ -68,6 +73,12 @@ $(function() {
     return Mustache.render(template, info)
   }
 
+  /*
+  * Function to create the html content or primary card info
+  *
+  * Uses mustache template for generating HTML
+  * @param place - city name
+  */
   function getMarker(place) {    
     var template = $('#map-marker').html()
     var weather = {
@@ -84,6 +95,13 @@ $(function() {
     return Mustache.render(template, weather)
   }
 
+  /*
+   * Main rendering function for infographic
+   *
+   * Render the primary card for each city using the available weather data.
+   *
+   *
+   */ 
   function refreshView() {    
     Object.keys(places).forEach(function(key){  
       var name = key.split(' ').join('')
@@ -100,6 +118,12 @@ $(function() {
     })    
   }
 
+  /*
+   *
+   * Function for calculating the color gradient for displaying temperature
+   *
+   *
+   */ 
   function getTempColor(temperature) {    
     var tempCelsius = temperature - 273.15
     if (tempCelsius < minTemp || tempCelsius > maxTemp) {
@@ -107,7 +131,13 @@ $(function() {
     }
     return tempCelsius > transitionTemp ? colorLuminance(colorHot, 1 - ((tempCelsius - transitionTemp) / (maxTemp - transitionTemp))) : colorLuminance(colorCold, 1 - ((transitionTemp - tempCelsius) / (transitionTemp - minTemp)))
   }
-
+  
+  /*
+   * Function to set the icon on mapbox for each city
+   *
+   * Sets up the class and primary card HTML rendering by calling getmarker ( ) internally.
+   * Called only once during initial display of map.
+   */
   function getIcon(place) {
     return L.divIcon({
       className: 'div-icon',
@@ -116,7 +146,12 @@ $(function() {
     })
   }
   
-
+/*
+ *
+ * Publish function for getting the weather data for the first time after page load.
+ *
+ * Called on PubNub Connect.
+ */
   function pub() {
     console.log("publishing")
     pubnub.publish({
@@ -130,6 +165,7 @@ $(function() {
     })
   }
 
+//PubNub Subscribe registration
   pubnub.subscribe({
     channel: 'wnGet',
     message: function(message) {      
