@@ -24,12 +24,12 @@ e) You must have Node.js installed on the server where the application will be i
 
 3) Configure the server.js and config.js with the api keys as per the prerequisite section above 
 
-4) Run the spm package install command to install all dependencies : 'npm install'
+4) Run the npm package install command to install all dependencies : 'npm install'
 
 5) Start the server : 'node server.js'
 
 ##Working
-1) Open the browser and type http://<IP-ADDRESS>:3000 , where <IP-ADDRES> can be localhost ( if testing locally) or the actual IP address of the server.
+1) Open the browser and type http://IP-ADDRESS:3000 , where IP-ADDRES can be localhost ( if testing locally) or the actual IP address of the server (if testing remotely).
 
 2) The webpage will open and display a world map.
 
