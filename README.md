@@ -17,7 +17,7 @@ d) You should have a Mapbox api account and place the api key in [config.js](pub
 
 e) You must have Node.js installed on the server where the application will be installed.
 
-###Steps to host the server
+###Steps for installing application server
 1) Clone the repository by performing the following git command : 'git clone https://github.com/shyampurk/weather-infographic.git'
 
 2) Change directory to weather-infographic : 'cd weather-infographic'
