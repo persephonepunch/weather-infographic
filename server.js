@@ -95,7 +95,7 @@ function fetch (place, coordinates, i, aggregate) {
    	console.log("Error OR Results", JSON.stringify(err || results));
    	var data = {   		
    		'place': place,
-   		'coordinates': coordinates.reverse(),
+   		'coordinates': [coordinates[1], coordinates[0]],
    		'timeZoneId': results[0].timeZoneId,
    		'sunrise': results[1].sunrise,
    		'sunset': results[1].sunset,
