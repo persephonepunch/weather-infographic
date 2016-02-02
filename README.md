@@ -7,7 +7,7 @@ This project is an attempt to build a bare bones, data driven infographic to por
 ##Steps for hosting
 
 ###Prerequisites
-a) You should have a google developer API access. Update [server.js](server.js) file with the key in line 11.
+a) You should have a google developer API access. Update [server.js](server.js) file with API key in line 11.
 
 b)You should have a PubNub account .Update the PubNub publish and subscribe key in [server.js](server.js) line 20,21 & in [config.js](public/config.js), Line 1 & 2
 
@@ -26,7 +26,7 @@ e) You must have Node.js installed on the server where the application will be i
 
 4) Run the npm package install command to install all dependencies : 'npm install'
 
-5) Start the server : 'node server.js'
+5) Start the server : 'node server.js'. Optionally, you can run the server under [forever](https://www.npmjs.com/package/forever) to ensure continuous operation.
 
 ##Working
 1) Open the browser and type http://IP-ADDRESS:3000 , where IP-ADDRES can be localhost ( if testing locally) or the actual IP address of the server (if testing remotely).
